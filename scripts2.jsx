@@ -2,7 +2,7 @@ function BurningPointVerdict(props){
 	
 	if(props.cTemp >= 233){
 		return(
-			<h1>The temperature is at a point where it will turn fire to paper</h1>
+			<h1>The temperature is at a point where it will turn paper into fire</h1>
 		)
 	}else{
 		return(
@@ -13,12 +13,12 @@ function BurningPointVerdict(props){
 }
 
 function convertMeToFahrenheit(celsius){
-	var convertedNumber = celsius * 1.8 + 32; 
+	var convertedNumber = (celsius * 9 / 5 ) + 32	
 	return convertedNumber;
 }
 
 function convertMeToCelsius(fahrenheit){
-	var convertedNumber = (fahrenheit - 32)/1.8
+	var convertedNumber = (fahrenheit-32) * (5/9); 
 	return convertedNumber;
 }
 
@@ -27,7 +27,7 @@ var TemperatureDisplay = React.createClass({
 		
 		
 		{/*need to call parent function using this.props and pass it a parameter in order to change the state */}
-		this.props.changeCalculatorState(event.target.value);
+		this.props.onChange(event.target.value);
 	},
 
 	render: function(){
@@ -77,19 +77,22 @@ var Calculator = React.createClass({
 		var tempType = this.state.tempType; 
 		var temp = this.state.temperature; 
 
-		if(tempType = 'celsius'){
+		if(tempType === 'celsius'){
 			var cTemp = temp; 
 			var fTemp = convertMeToFahrenheit(temp);
-		}else{
+			console.log(tempType);
+		}else if(tempType ==='fahrenheit'){
 			var cTemp = convertMeToCelsius(temp);
 			var fTemp = temp;
+			console.log(tempType);
+			
 		}
 
 		return(
 			<div>
-				<TemperatureDisplay changeCalculatorState={this.handleCelsiusChange} unitType="celsius"/>
-				<TemperatureDisplay changeCalculatorState={this.handleFahrenheitChange} unitType="fahrenheit" />
-				<BurningPointVerdict cTemp={cTemp}/>
+				<TemperatureDisplay onChange={this.handleCelsiusChange} unitType="celsius"/>
+				<TemperatureDisplay onChange={this.handleFahrenheitChange} unitType="fahrenheit" />
+				<BurningPointVerdict cTemp={Number(cTemp)}/>
 			</div>
 
 		)
